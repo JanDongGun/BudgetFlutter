@@ -4,6 +4,7 @@ import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:antdesign_icons/antdesign_icons.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
+import 'create_budget_page.dart';
 
 class Budget extends StatefulWidget {
   const Budget({Key? key}) : super(key: key);
@@ -41,7 +42,7 @@ class _BudgetState extends State<Budget> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: const [
+                  children: [
                     Text(
                       "Budget",
                       style: TextStyle(
@@ -52,7 +53,15 @@ class _BudgetState extends State<Budget> {
                     SizedBox(
                       width: 200,
                     ),
-                    Icon(Icons.add),
+                    GestureDetector(
+                        onTap: () {
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => CreateBudget()),
+                          );
+                        },
+                        child: Icon(Icons.add)),
                     Icon(AntIcons.searchOutlined)
                   ],
                 ),
