@@ -43,14 +43,14 @@ class _BudgetState extends State<Budget> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(
+                    const Text(
                       "Budget",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 200,
                     ),
                     GestureDetector(
@@ -61,8 +61,8 @@ class _BudgetState extends State<Budget> {
                                 builder: (context) => CreateBudget()),
                           );
                         },
-                        child: Icon(Icons.add)),
-                    Icon(AntIcons.searchOutlined)
+                        child: const Icon(Icons.add)),
+                    const Icon(AntIcons.searchOutlined)
                   ],
                 ),
                 const SizedBox(
@@ -119,16 +119,17 @@ class _BudgetState extends State<Budget> {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 10,
         ),
-        budgetContainer("Budget 1", 2500, 3000),
-        budgetContainer("Budget 2", 1200, 2500),
-        budgetContainer("Budget 3", 700, 2300),
+        budgetContainer("Budget 1", "Bank", 2500, 3000),
+        budgetContainer("Budget 2", "Cast", 1200, 2500),
+        budgetContainer("Budget 3", "Bank", 890, 2000)
       ],
     ));
   }
 
-  Widget budgetContainer(String budgetName, int currentAmount, int amount) {
+  Widget budgetContainer(
+      String budgetName, String type, int currentAmount, int amount) {
     var size = MediaQuery.of(context).size;
     var percentAmount = (currentAmount / amount) * 100;
     return Padding(
@@ -139,7 +140,7 @@ class _BudgetState extends State<Budget> {
           children: [
             Text(
               budgetName,
-              style: TextStyle(color: Colors.grey),
+              style: const TextStyle(color: Colors.grey, fontSize: 12),
             ),
             const SizedBox(
               height: 10,
@@ -149,34 +150,37 @@ class _BudgetState extends State<Budget> {
               children: [
                 Text(
                   "\$" + currentAmount.toString(),
-                  style: TextStyle(fontSize: 30),
+                  style: const TextStyle(
+                      fontSize: 22, fontWeight: FontWeight.w500),
                 ),
                 const SizedBox(
                   width: 5,
                 ),
                 Text(
                   percentAmount.toStringAsFixed(0) + "%",
-                  style: TextStyle(color: Colors.grey),
+                  style: TextStyle(
+                      color: type == "Bank" ? blue : primary, fontSize: 12),
                 ),
-                Spacer(),
-                Text(
-                  "\$" + amount.toString(),
-                  style: TextStyle(color: Colors.grey),
-                ),
+                const Spacer(),
+                Text("\$" + amount.toString(),
+                    style: const TextStyle(
+                      color: Colors.grey,
+                      fontSize: 12,
+                    )),
               ],
             ),
             const SizedBox(
-              height: 15,
+              height: 10,
             ),
             LinearPercentIndicator(
               percent: percentAmount / 100,
-              progressColor: blue,
+              progressColor: type == "Bank" ? blue : primary,
             )
           ],
         ),
         width: (size.width - 40),
-        height: (size.height) / 7,
-        padding: EdgeInsets.all(15.0),
+        height: (size.height) / 8,
+        padding: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           color: Colors.white,
