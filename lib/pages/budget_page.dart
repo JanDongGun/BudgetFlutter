@@ -5,6 +5,7 @@ import 'package:antdesign_icons/antdesign_icons.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'create_budget_page.dart';
 import '../json/day_month.dart';
+import '../json/budget_json.dart';
 
 class Budget extends StatefulWidget {
   const Budget({Key? key}) : super(key: key);
@@ -113,7 +114,7 @@ class _BudgetState extends State<Budget> {
                       ),
                     );
                   }),
-                )
+                ),
               ],
             ),
           ),
@@ -121,9 +122,71 @@ class _BudgetState extends State<Budget> {
         const SizedBox(
           height: 10,
         ),
-        budgetContainer("Budget 1", "Bank", 2500, 3000),
-        budgetContainer("Budget 2", "Cast", 1200, 2500),
-        budgetContainer("Budget 3", "Bank", 890, 2000)
+        Column(
+          children: List.generate(budget.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: Container(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      budget[index]['name'],
+                      style: const TextStyle(color: Colors.grey, fontSize: 12),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      crossAxisAlignment: CrossAxisAlignment.end,
+                      children: [
+                        Text(
+                          budget[index]['current_amount'],
+                          style: const TextStyle(
+                              fontSize: 22, fontWeight: FontWeight.w500),
+                        ),
+                        const SizedBox(
+                          width: 5,
+                        ),
+                        Text(
+                          budget[index]['label_percentage'],
+                          style: TextStyle(
+                              color: budget[index]['color'], fontSize: 12),
+                        ),
+                        const Spacer(),
+                        Text(budget[index]['amount'],
+                            style: const TextStyle(
+                              color: Colors.grey,
+                              fontSize: 12,
+                            )),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    LinearPercentIndicator(
+                      percent: budget[index]['percentage'],
+                      progressColor: budget[index]['color'],
+                    )
+                  ],
+                ),
+                width: (size.width - 40),
+                height: (size.height) / 8,
+                padding: const EdgeInsets.all(15.0),
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(10),
+                  color: Colors.white,
+                  boxShadow: [
+                    BoxShadow(
+                        color: grey.withOpacity(0.05),
+                        spreadRadius: 3,
+                        blurRadius: 3),
+                  ],
+                ),
+              ),
+            );
+          }),
+        )
       ],
     ));
   }
