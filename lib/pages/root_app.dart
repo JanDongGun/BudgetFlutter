@@ -1,9 +1,11 @@
 import 'package:budgetapp/pages/daily_page.dart';
+import 'package:budgetapp/pages/stat_page.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
 import 'package:animated_bottom_navigation_bar/animated_bottom_navigation_bar.dart';
 import 'budget_page.dart';
+import 'package:budgetapp/pages/stat_page.dart';
 
 class RootApp extends StatefulWidget {
   const RootApp({Key? key}) : super(key: key);
@@ -35,7 +37,7 @@ class _RootAppState extends State<RootApp> {
       children: const [
         DailyPage(),
         Center(
-          child: Text("Stats Page"),
+          child: Stat(),
         ),
         Center(
           child: Budget(),
