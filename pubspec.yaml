@@ -37,6 +37,7 @@ dependencies:
   ionicons: ^0.1.2
   animated_bottom_navigation_bar: ^0.3.2
   antdesign_icons: ^0.0.3
+  fl_chart: ^0.40.6
 
 dev_dependencies:
   flutter_test:
