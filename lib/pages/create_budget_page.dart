@@ -1,9 +1,17 @@
-import 'package:budgetapp/json/day_month.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:antdesign_icons/antdesign_icons.dart';
-import 'package:percent_indicator/linear_percent_indicator.dart';
+
+class CategoryItem {
+  final String image;
+  final String title;
+
+  const CategoryItem({
+    required this.image,
+    required this.title,
+  });
+}
 
 class CreateBudget extends StatefulWidget {
   const CreateBudget({Key? key}) : super(key: key);
@@ -13,6 +21,15 @@ class CreateBudget extends StatefulWidget {
 }
 
 class _CreateBudgetState extends State<CreateBudget> {
+  List<CategoryItem> items = [
+    CategoryItem(title: 'Bank', image: 'bank.png'),
+    CategoryItem(title: 'Cash', image: 'cash.png'),
+    CategoryItem(title: 'Auto', image: 'auto.png'),
+    CategoryItem(title: 'Charity', image: 'charity.png'),
+    CategoryItem(title: 'Eating', image: 'eating.png'),
+    CategoryItem(title: 'Gift', image: 'gift.png'),
+  ];
+  String categoryIndex = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: getBody());
@@ -41,14 +58,14 @@ class _CreateBudgetState extends State<CreateBudget> {
                           Navigator.pop(context);
                         },
                         child: Icon(Icons.arrow_back)),
-                    Text(
+                    const Text(
                       "Create Budget",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: black),
                     ),
-                    SizedBox(
+                    const SizedBox(
                       width: 170,
                     ),
                     Icon(AntIcons.searchOutlined)
@@ -59,58 +76,153 @@ class _CreateBudgetState extends State<CreateBudget> {
           ),
         ),
         const SizedBox(
-          height: 20,
+          height: 10,
         ),
-        Container(
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(
-                "Choose category",
-                style: TextStyle(fontSize: 18, color: Colors.black54),
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: size.width / 2.3,
-                    height: size.height / 6,
-                    padding: EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: grey.withOpacity(0.05),
-                            spreadRadius: 3,
-                            blurRadius: 3),
-                      ],
+        Padding(
+          padding: const EdgeInsets.fromLTRB(20, 10, 20, 10),
+          child: Container(
+            child: Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                Text(
+                  "Choose category",
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 18,
+                      color: Colors.black54.withOpacity(0.5)),
+                ),
+                const SizedBox(
+                  height: 20,
+                ),
+                Container(
+                  height: size.height / 4,
+                  child: ListView.separated(
+                    scrollDirection: Axis.horizontal,
+                    itemCount: 6,
+                    separatorBuilder: (context, _) => const SizedBox(
+                      width: 20,
+                    ),
+                    itemBuilder: (context, index) =>
+                        category(item: items[index]),
+                  ),
+                ),
+                const SizedBox(
+                  height: 40,
+                ),
+                const Text(
+                  'Budget name',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                TextField(
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      color: Colors.grey.withOpacity(0.5),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    border: InputBorder.none,
+                    hintText: 'Enter budget name',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
                     ),
                   ),
-                  SizedBox(
-                    width: 15,
-                  ),
-                  Container(
-                    width: size.width / 2.3,
-                    height: size.height / 6,
-                    padding: EdgeInsets.all(15.0),
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(10),
-                      color: Colors.white,
-                      boxShadow: [
-                        BoxShadow(
-                            color: grey.withOpacity(0.05),
-                            spreadRadius: 3,
-                            blurRadius: 3),
-                      ],
+                ),
+                const SizedBox(
+                  height: 30,
+                ),
+                const Text(
+                  'Enter budget',
+                  style: TextStyle(fontSize: 12, color: Colors.grey),
+                ),
+                Row(
+                  children: [
+                    Container(
+                      width: 250,
+                      child: TextField(
+                        decoration: InputDecoration(
+                          hintStyle: TextStyle(
+                            color: Colors.grey.withOpacity(0.5),
+                            fontSize: 20,
+                            fontWeight: FontWeight.w500,
+                          ),
+                          border: InputBorder.none,
+                          hintText: '\$' '5000',
+                          enabledBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          ),
+                          focusedBorder: UnderlineInputBorder(
+                            borderSide:
+                                BorderSide(color: Colors.grey.withOpacity(0.5)),
+                          ),
+                        ),
+                      ),
                     ),
-                  )
-                ],
-              )
-            ],
+                    const Spacer(),
+                    FloatingActionButton(
+                      onPressed: () => {},
+                      child: Icon(Icons.navigate_next),
+                      backgroundColor: primary,
+                      foregroundColor: white,
+                    )
+                  ],
+                ),
+              ],
+            ),
           ),
         )
       ],
     ));
+  }
+
+  Widget category({required CategoryItem item}) {
+    var size = MediaQuery.of(context).size;
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          categoryIndex = item.title;
+        });
+      },
+      child: Container(
+        width: size.width / 2.5,
+        height: size.height / 4,
+        padding: const EdgeInsets.all(15.0),
+        decoration: BoxDecoration(
+          borderRadius: BorderRadius.circular(10),
+          color: Colors.white,
+          border: Border.all(
+              color: categoryIndex == item.title ? primary : Colors.transparent,
+              width: 3),
+          boxShadow: [
+            BoxShadow(
+                color: grey.withOpacity(0.05), spreadRadius: 3, blurRadius: 3),
+          ],
+        ),
+        child: Padding(
+          padding: const EdgeInsets.all(20.0),
+          child: Column(
+            crossAxisAlignment: CrossAxisAlignment.start,
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Container(
+                  width: 50,
+                  height: 50,
+                  child: Image.asset('assets/images/' + item.image)),
+              Text(item.title,
+                  style: TextStyle(
+                      fontWeight: FontWeight.w500,
+                      fontSize: 20,
+                      color:
+                          categoryIndex == item.title ? primary : Colors.black))
+            ],
+          ),
+        ),
+      ),
+    );
   }
 }
