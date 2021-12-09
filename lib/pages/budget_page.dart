@@ -1,10 +1,10 @@
-import 'package:budgetapp/json/day_month.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:antdesign_icons/antdesign_icons.dart';
 import 'package:percent_indicator/linear_percent_indicator.dart';
 import 'create_budget_page.dart';
+import '../json/day_month.dart';
 
 class Budget extends StatefulWidget {
   const Budget({Key? key}) : super(key: key);
@@ -14,7 +14,7 @@ class Budget extends StatefulWidget {
 }
 
 class _BudgetState extends State<Budget> {
-  int activeDay = 4;
+  int activeMonth = 1;
   // int amount = 6000;
   // int currentAmount = 3000;
   @override
@@ -70,11 +70,11 @@ class _BudgetState extends State<Budget> {
                 ),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: List.generate(days.length, (index) {
+                  children: List.generate(months.length, (index) {
                     return GestureDetector(
                       onTap: () {
                         setState(() {
-                          activeDay = index;
+                          activeMonth = index;
                         });
                       },
                       child: Container(
@@ -82,7 +82,7 @@ class _BudgetState extends State<Budget> {
                         child: Column(
                           children: [
                             Text(
-                              days[index]['label'],
+                              months[index]['label'],
                               style: const TextStyle(fontSize: 10),
                             ),
                             const SizedBox(height: 10),
@@ -90,20 +90,20 @@ class _BudgetState extends State<Budget> {
                               width: 30,
                               height: 30,
                               decoration: BoxDecoration(
-                                  color: activeDay == index
+                                  color: activeMonth == index
                                       ? primary
                                       : Colors.transparent,
                                   shape: BoxShape.circle,
                                   border: Border.all(
-                                      color: activeDay == index
+                                      color: activeMonth == index
                                           ? primary
                                           : black.withOpacity(0.1))),
                               child: Center(
                                 child: Text(
-                                  days[index]['day'],
+                                  months[index]['month'],
                                   style: TextStyle(
                                     fontSize: 10,
-                                    color: activeDay == index ? white : black,
+                                    color: activeMonth == index ? white : black,
                                   ),
                                 ),
                               ),
