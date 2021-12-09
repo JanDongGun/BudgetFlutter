@@ -16,8 +16,6 @@ class Budget extends StatefulWidget {
 
 class _BudgetState extends State<Budget> {
   int activeMonth = 1;
-  // int amount = 6000;
-  // int currentAmount = 3000;
   @override
   Widget build(BuildContext context) {
     return Scaffold(
