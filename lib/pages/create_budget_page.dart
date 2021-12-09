@@ -2,16 +2,7 @@ import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:antdesign_icons/antdesign_icons.dart';
-
-class CategoryItem {
-  final String image;
-  final String title;
-
-  const CategoryItem({
-    required this.image,
-    required this.title,
-  });
-}
+import '../json/create_budget_json.dart';
 
 class CreateBudget extends StatefulWidget {
   const CreateBudget({Key? key}) : super(key: key);
@@ -21,14 +12,6 @@ class CreateBudget extends StatefulWidget {
 }
 
 class _CreateBudgetState extends State<CreateBudget> {
-  List<CategoryItem> items = [
-    CategoryItem(title: 'Bank', image: 'bank.png'),
-    CategoryItem(title: 'Cash', image: 'cash.png'),
-    CategoryItem(title: 'Auto', image: 'auto.png'),
-    CategoryItem(title: 'Charity', image: 'charity.png'),
-    CategoryItem(title: 'Eating', image: 'eating.png'),
-    CategoryItem(title: 'Gift', image: 'gift.png'),
-  ];
   String categoryIndex = "";
   @override
   Widget build(BuildContext context) {
@@ -94,16 +77,65 @@ class _CreateBudgetState extends State<CreateBudget> {
                 const SizedBox(
                   height: 20,
                 ),
-                Container(
-                  height: size.height / 4,
-                  child: ListView.separated(
-                    scrollDirection: Axis.horizontal,
-                    itemCount: 6,
-                    separatorBuilder: (context, _) => const SizedBox(
-                      width: 20,
-                    ),
-                    itemBuilder: (context, index) =>
-                        category(item: items[index]),
+                SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  child: Row(
+                    children: List.generate(categories.length, (index) {
+                      return Padding(
+                        padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                        child: GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              categoryIndex = categories[index]['name'];
+                            });
+                          },
+                          child: Container(
+                            width: size.width / 2.5,
+                            height: size.height / 4,
+                            padding: const EdgeInsets.all(15.0),
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              color: Colors.white,
+                              border: Border.all(
+                                  color:
+                                      categoryIndex == categories[index]['name']
+                                          ? primary
+                                          : Colors.transparent,
+                                  width: 3),
+                              boxShadow: [
+                                BoxShadow(
+                                    color: grey.withOpacity(0.05),
+                                    spreadRadius: 3,
+                                    blurRadius: 3),
+                              ],
+                            ),
+                            child: Padding(
+                              padding: const EdgeInsets.all(20.0),
+                              child: Column(
+                                crossAxisAlignment: CrossAxisAlignment.start,
+                                mainAxisAlignment:
+                                    MainAxisAlignment.spaceBetween,
+                                children: [
+                                  Container(
+                                      width: 50,
+                                      height: 50,
+                                      child: Image.asset(
+                                          categories[index]['icon'])),
+                                  Text(categories[index]['name'],
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.w500,
+                                          fontSize: 20,
+                                          color: categoryIndex ==
+                                                  categories[index]['name']
+                                              ? primary
+                                              : Colors.black))
+                                ],
+                              ),
+                            ),
+                          ),
+                        ),
+                      );
+                    }),
                   ),
                 ),
                 const SizedBox(
@@ -180,49 +212,49 @@ class _CreateBudgetState extends State<CreateBudget> {
     ));
   }
 
-  Widget category({required CategoryItem item}) {
-    var size = MediaQuery.of(context).size;
-    return GestureDetector(
-      onTap: () {
-        setState(() {
-          categoryIndex = item.title;
-        });
-      },
-      child: Container(
-        width: size.width / 2.5,
-        height: size.height / 4,
-        padding: const EdgeInsets.all(15.0),
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(10),
-          color: Colors.white,
-          border: Border.all(
-              color: categoryIndex == item.title ? primary : Colors.transparent,
-              width: 3),
-          boxShadow: [
-            BoxShadow(
-                color: grey.withOpacity(0.05), spreadRadius: 3, blurRadius: 3),
-          ],
-        ),
-        child: Padding(
-          padding: const EdgeInsets.all(20.0),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              Container(
-                  width: 50,
-                  height: 50,
-                  child: Image.asset('assets/images/' + item.image)),
-              Text(item.title,
-                  style: TextStyle(
-                      fontWeight: FontWeight.w500,
-                      fontSize: 20,
-                      color:
-                          categoryIndex == item.title ? primary : Colors.black))
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  // Widget category() {
+  //   var size = MediaQuery.of(context).size;
+  //   return GestureDetector(
+  //     onTap: () {
+  //       setState(() {
+  //         categoryIndex = item.title;
+  //       });
+  //     },
+  //     child: Container(
+  //       width: size.width / 2.5,
+  //       height: size.height / 4,
+  //       padding: const EdgeInsets.all(15.0),
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(10),
+  //         color: Colors.white,
+  //         border: Border.all(
+  //             color: categoryIndex == item.title ? primary : Colors.transparent,
+  //             width: 3),
+  //         boxShadow: [
+  //           BoxShadow(
+  //               color: grey.withOpacity(0.05), spreadRadius: 3, blurRadius: 3),
+  //         ],
+  //       ),
+  //       child: Padding(
+  //         padding: const EdgeInsets.all(20.0),
+  //         child: Column(
+  //           crossAxisAlignment: CrossAxisAlignment.start,
+  //           mainAxisAlignment: MainAxisAlignment.spaceBetween,
+  //           children: [
+  //             Container(
+  //                 width: 50,
+  //                 height: 50,
+  //                 child: Image.asset('assets/images/' + item.image)),
+  //             Text(item.title,
+  //                 style: TextStyle(
+  //                     fontWeight: FontWeight.w500,
+  //                     fontSize: 20,
+  //                     color:
+  //                         categoryIndex == item.title ? primary : Colors.black))
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
