@@ -124,32 +124,102 @@ class _StatState extends State<Stat> {
                         blurRadius: 3),
                   ],
                 ),
-                child: Padding(
-                  padding: const EdgeInsets.fromLTRB(0, 20, 30, 20),
-                  child: LineChart(LineChartData(
-                    minX: 0,
-                    maxX: 11,
-                    minY: 0,
-                    maxY: 20,
-                    lineBarsData: [
-                      LineChartBarData(spots: [
-                        FlSpot(0, 3),
-                        FlSpot(2, 4),
-                        FlSpot(3, 6),
-                        FlSpot(4, 9),
-                        FlSpot(6, 5),
-                        FlSpot(7, 10),
-                        FlSpot(8, 15),
-                        FlSpot(11, 9),
-                      ])
-                    ],
-                    gridData: FlGridData(show: false),
-                    borderData: FlBorderData(show: false),
-                    titlesData: FlTitlesData(
-                        rightTitles: SideTitles(showTitles: false),
-                        topTitles: SideTitles(showTitles: false)),
-                  )),
-                ),
+                child: Stack(children: [
+                  Positioned(
+                      top: 15,
+                      left: 50,
+                      child: Text(
+                        'Net Balance',
+                        style:
+                            TextStyle(color: grey.withOpacity(1), fontSize: 10),
+                      )),
+                  Positioned(
+                      top: 30,
+                      left: 50,
+                      child: Text(
+                        '\$25648.90',
+                        style: TextStyle(
+                            color: black.withOpacity(1),
+                            fontSize: 26,
+                            fontWeight: FontWeight.bold),
+                      )),
+                  Padding(
+                    padding: const EdgeInsets.all(10),
+                    child: LineChart(
+                      LineChartData(
+                        minX: 0,
+                        maxX: 11,
+                        minY: 0,
+                        maxY: 10,
+                        lineBarsData: [
+                          LineChartBarData(
+                            isCurved: true,
+                            colors: redGradientColors,
+                            barWidth: 3,
+                            dotData: FlDotData(show: false),
+                            spots: [
+                              FlSpot(0, 3),
+                              FlSpot(2, 4),
+                              FlSpot(3, 6),
+                              FlSpot(4, 5),
+                              FlSpot(6, 2),
+                              FlSpot(7, 3),
+                              FlSpot(8, 6),
+                              FlSpot(11, 9),
+                            ],
+                          )
+                        ],
+                        gridData: FlGridData(show: false),
+                        borderData: FlBorderData(show: false),
+                        titlesData: FlTitlesData(
+                            rightTitles: SideTitles(showTitles: false),
+                            topTitles: SideTitles(showTitles: false),
+                            bottomTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (context, value) =>
+                                    const TextStyle(color: grey, fontSize: 12),
+                                getTitles: (value) {
+                                  switch (value.toInt()) {
+                                    case 0:
+                                      return 'JAN';
+                                    case 2:
+                                      return 'MAR';
+                                    case 4:
+                                      return 'MAY';
+                                    case 6:
+                                      return 'JUL';
+                                    case 8:
+                                      return 'SEP';
+                                    case 10:
+                                      return 'NOV';
+                                  }
+                                  return '';
+                                }),
+                            leftTitles: SideTitles(
+                                showTitles: true,
+                                getTextStyles: (context, value) =>
+                                    const TextStyle(color: grey, fontSize: 12),
+                                getTitles: (value) {
+                                  switch (value.toInt()) {
+                                    case 0:
+                                      return '0';
+                                    case 2:
+                                      return '2K';
+                                    case 4:
+                                      return '4K';
+                                    case 6:
+                                      return '6K';
+                                    case 8:
+                                      return '8K';
+                                    case 10:
+                                      return '10K';
+                                  }
+                                  return '';
+                                })),
+                      ),
+                    ),
+                  ),
+                ]),
               ),
               const SizedBox(
                 height: 20,
@@ -181,11 +251,15 @@ class _StatState extends State<Stat> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              FloatingActionButton(
-                                onPressed: () {},
-                                child: Icon(Icons.first_page),
-                                backgroundColor: blue,
-                                foregroundColor: white,
+                              Container(
+                                height: 40,
+                                width: 40,
+                                child: FloatingActionButton(
+                                  onPressed: () {},
+                                  child: Icon(Icons.first_page),
+                                  backgroundColor: blue,
+                                  foregroundColor: white,
+                                ),
                               ),
                               SizedBox(
                                 height: size.height / 20,
@@ -195,7 +269,7 @@ class _StatState extends State<Stat> {
                                 style: TextStyle(
                                     fontSize: 10, color: grey.withOpacity(1)),
                               ),
-                              Text('\$ 654584556',
+                              Text('\$64215.24',
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500,
@@ -226,11 +300,15 @@ class _StatState extends State<Stat> {
                             crossAxisAlignment: CrossAxisAlignment.start,
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
-                              FloatingActionButton(
-                                onPressed: () {},
-                                child: Icon(Icons.last_page),
-                                backgroundColor: red,
-                                foregroundColor: white,
+                              Container(
+                                height: 40,
+                                width: 40,
+                                child: FloatingActionButton(
+                                  onPressed: () {},
+                                  child: Icon(Icons.last_page),
+                                  backgroundColor: red,
+                                  foregroundColor: white,
+                                ),
                               ),
                               SizedBox(
                                 height: size.height / 20,
@@ -240,7 +318,7 @@ class _StatState extends State<Stat> {
                                 style: TextStyle(
                                     fontSize: 10, color: grey.withOpacity(1)),
                               ),
-                              Text('\$ 59658845',
+                              Text('\$55628.20',
                                   style: TextStyle(
                                       fontSize: 20,
                                       fontWeight: FontWeight.w500,
@@ -259,4 +337,31 @@ class _StatState extends State<Stat> {
       ],
     ));
   }
+}
+
+class LineTitle {
+  getTitileData() => FlTitlesData(
+      rightTitles: SideTitles(showTitles: false),
+      topTitles: SideTitles(showTitles: false),
+      bottomTitles: SideTitles(
+          showTitles: true,
+          margin: 8,
+          getTextStyles: (context, value) => const TextStyle(color: grey),
+          getTitles: (value) {
+            switch (value.toInt()) {
+              case 0:
+                return 'JAN';
+              case 2:
+                return 'MAR';
+              case 4:
+                return 'MAY';
+              case 6:
+                return 'JUL';
+              case 8:
+                return 'SEP';
+              case 10:
+                return 'NOV';
+            }
+            return '';
+          }));
 }
