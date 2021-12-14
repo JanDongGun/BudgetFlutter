@@ -68,7 +68,7 @@ class _CreateBudgetState extends State<CreateBudget> {
               crossAxisAlignment: CrossAxisAlignment.start,
               children: [
                 Text(
-                  "Choose category",
+                  "Choose an icon for your budget",
                   style: TextStyle(
                       fontWeight: FontWeight.w500,
                       fontSize: 18,
