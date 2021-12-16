@@ -1,5 +1,6 @@
 import 'package:budgetapp/pages/daily_page.dart';
 import 'package:budgetapp/pages/stat_page.dart';
+import 'package:budgetapp/pages/add_transaction_page.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:ionicons/ionicons.dart';
@@ -46,7 +47,7 @@ class _RootAppState extends State<RootApp> {
           child: Text("Profile page"),
         ),
         Center(
-          child: Text("Create budget Page"),
+          child: AddTransaction(),
         ),
       ],
     );
