@@ -157,7 +157,7 @@ class _StatState extends State<Stat> {
                             colors: redGradientColors,
                             barWidth: 3,
                             dotData: FlDotData(show: false),
-                            spots: [
+                            spots: const [
                               FlSpot(0, 3),
                               FlSpot(2, 4),
                               FlSpot(3, 6),
@@ -233,7 +233,7 @@ class _StatState extends State<Stat> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: (size.width - 60) / 2,
+                        width: (size.width - 100) / 2,
                         height: size.height / 4.5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -255,8 +255,9 @@ class _StatState extends State<Stat> {
                                 height: 40,
                                 width: 40,
                                 child: FloatingActionButton(
+                                  heroTag: 'btn income',
                                   onPressed: () {},
-                                  child: Icon(Icons.first_page),
+                                  child: const Icon(Icons.first_page),
                                   backgroundColor: blue,
                                   foregroundColor: white,
                                 ),
@@ -282,7 +283,7 @@ class _StatState extends State<Stat> {
                     GestureDetector(
                       onTap: () {},
                       child: Container(
-                        width: (size.width - 60) / 2,
+                        width: (size.width - 100) / 2,
                         height: size.height / 4.5,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(10),
@@ -304,8 +305,9 @@ class _StatState extends State<Stat> {
                                 height: 40,
                                 width: 40,
                                 child: FloatingActionButton(
+                                  heroTag: 'btn expense',
                                   onPressed: () {},
-                                  child: Icon(Icons.last_page),
+                                  child: const Icon(Icons.last_page),
                                   backgroundColor: red,
                                   foregroundColor: white,
                                 ),
