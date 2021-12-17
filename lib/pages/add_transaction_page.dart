@@ -1,3 +1,4 @@
+import 'package:budgetapp/pages/transaction_page.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -33,17 +34,15 @@ class _AddTransactionState extends State<AddTransaction> {
               children: [
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GestureDetector(
-                        onTap: () {}, child: const Icon(Icons.clear)),
-                    const Text(
+                  children: const [
+                    Text(
                       "Add Transaction",
                       style: TextStyle(
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: black),
                     ),
-                    const SizedBox(
+                    SizedBox(
                       width: 180,
                     )
                   ],
@@ -107,7 +106,14 @@ class _AddTransactionState extends State<AddTransaction> {
                                 width: 40,
                                 child: FloatingActionButton(
                                   heroTag: 'btn trans_income',
-                                  onPressed: () {},
+                                  onPressed: () async {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Transaction(
+                                                  type: 'Income',
+                                                )));
+                                  },
                                   child: const Icon(Icons.first_page),
                                   backgroundColor: blue,
                                   foregroundColor: white,
@@ -152,7 +158,14 @@ class _AddTransactionState extends State<AddTransaction> {
                                 width: 40,
                                 child: FloatingActionButton(
                                   heroTag: 'btn trans_expense',
-                                  onPressed: () {},
+                                  onPressed: () {
+                                    Navigator.push(
+                                        context,
+                                        MaterialPageRoute(
+                                            builder: (context) => Transaction(
+                                                  type: 'Expense',
+                                                )));
+                                  },
                                   child: const Icon(Icons.last_page),
                                   backgroundColor: red,
                                   foregroundColor: white,
