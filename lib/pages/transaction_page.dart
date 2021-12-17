@@ -228,13 +228,18 @@ class _TransactionState extends State<Transaction> {
                     ],
                   ),
                   const Spacer(),
-                  FloatingActionButton(
-                    heroTag: 'trans_submit',
-                    onPressed: () {},
-                    child: Text('Finish'),
-                    backgroundColor: secondary,
-                    foregroundColor: white,
-                  ),
+                  Container(
+                      height: 40,
+                      width: 100,
+                      decoration: BoxDecoration(
+                          color: primary,
+                          borderRadius: BorderRadius.circular(10)),
+                      child: TextButton(
+                          onPressed: () {},
+                          child: Text(
+                            "Finish",
+                            style: TextStyle(color: white.withOpacity(1)),
+                          )))
                 ],
               )
             ],

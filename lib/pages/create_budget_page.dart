@@ -139,39 +139,16 @@ class _CreateBudgetState extends State<CreateBudget> {
               const SizedBox(
                 height: 40,
               ),
-              const Text(
-                'Budget name',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              TextField(
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(
-                    color: Colors.grey.withOpacity(0.5),
-                    fontSize: 20,
-                    fontWeight: FontWeight.w500,
-                  ),
-                  border: InputBorder.none,
-                  hintText: 'Enter budget name',
-                  enabledBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                  ),
-                  focusedBorder: UnderlineInputBorder(
-                    borderSide: BorderSide(color: Colors.grey.withOpacity(0.5)),
-                  ),
-                ),
-              ),
-              const SizedBox(
-                height: 30,
-              ),
-              const Text(
-                'Enter budget',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              Row(
-                children: [
-                  Container(
-                    width: 250,
-                    child: TextField(
+              Padding(
+                padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    const Text(
+                      'Budget name',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    TextField(
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.grey.withOpacity(0.5),
@@ -179,7 +156,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                           fontWeight: FontWeight.w500,
                         ),
                         border: InputBorder.none,
-                        hintText: '\$' '5000',
+                        hintText: 'Enter budget name',
                         enabledBorder: UnderlineInputBorder(
                           borderSide:
                               BorderSide(color: Colors.grey.withOpacity(0.5)),
@@ -190,17 +167,55 @@ class _CreateBudgetState extends State<CreateBudget> {
                         ),
                       ),
                     ),
-                  ),
-                  const Spacer(),
-                  FloatingActionButton(
-                    heroTag: 'btn create_budget',
-                    onPressed: () => {},
-                    child: const Icon(Icons.navigate_next),
-                    backgroundColor: primary,
-                    foregroundColor: white,
-                  )
-                ],
-              ),
+                    const SizedBox(
+                      height: 30,
+                    ),
+                    const Text(
+                      'Enter budget',
+                      style: TextStyle(fontSize: 12, color: Colors.grey),
+                    ),
+                    Row(
+                      children: [
+                        Container(
+                          width: 250,
+                          child: TextField(
+                            decoration: InputDecoration(
+                              hintStyle: TextStyle(
+                                color: Colors.grey.withOpacity(0.5),
+                                fontSize: 20,
+                                fontWeight: FontWeight.w500,
+                              ),
+                              border: InputBorder.none,
+                              hintText: '\$' '5000',
+                              enabledBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey.withOpacity(0.5)),
+                              ),
+                              focusedBorder: UnderlineInputBorder(
+                                borderSide: BorderSide(
+                                    color: Colors.grey.withOpacity(0.5)),
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Spacer(),
+                        Container(
+                          height: 55,
+                          width: 55,
+                          decoration: BoxDecoration(
+                              color: primary,
+                              borderRadius: BorderRadius.circular(10)),
+                          child: IconButton(
+                            onPressed: () {},
+                            icon: Icon(Icons.navigate_next),
+                            color: white,
+                          ),
+                        )
+                      ],
+                    ),
+                  ],
+                ),
+              )
             ],
           ),
         )
