@@ -38,6 +38,7 @@ dependencies:
   animated_bottom_navigation_bar: ^0.3.2
   antdesign_icons: ^0.0.3
   fl_chart: ^0.40.6
+  syncfusion_flutter_calendar: ^19.3.59
 
 dev_dependencies:
   flutter_test:
