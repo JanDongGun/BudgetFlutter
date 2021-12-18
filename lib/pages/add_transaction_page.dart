@@ -54,7 +54,7 @@ class _AddTransactionState extends State<AddTransaction> {
         const SizedBox(
           height: 20,
         ),
-        Image.asset('assets/images/credit_card_illustration.png'),
+        Image.asset('assets/images/keytar_sweenet.png'),
         const SizedBox(
           height: 20,
         ),
