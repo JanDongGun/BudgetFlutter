@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:budgetapp/theme/colors.dart';
+import 'package:budgetapp/json/budget_json.dart';
 
 class Transaction extends StatefulWidget {
   final String type;
@@ -133,7 +134,13 @@ class _TransactionState extends State<Transaction> {
                       width: 40,
                       child: FloatingActionButton(
                         heroTag: 'trans_budget',
-                        onPressed: () {},
+                        onPressed: () {
+                          showDialog(
+                              context: context,
+                              builder: (BuildContext context) {
+                                return BudgetDialog();
+                              });
+                        },
                         child: Icon(Icons.account_balance_wallet),
                         backgroundColor: green,
                         foregroundColor: white,
@@ -155,7 +162,7 @@ class _TransactionState extends State<Transaction> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Budget 1',
+                        '',
                         style: TextStyle(
                             fontSize: 19,
                             fontWeight: FontWeight.bold,
@@ -245,6 +252,72 @@ class _TransactionState extends State<Transaction> {
             ],
           ),
         )
+      ],
+    );
+  }
+}
+
+class BudgetDialog extends StatefulWidget {
+  const BudgetDialog({Key? key}) : super(key: key);
+
+  @override
+  _BudgetDialogState createState() => _BudgetDialogState();
+}
+
+class _BudgetDialogState extends State<BudgetDialog> {
+  String? budgetSelected;
+  @override
+  Widget build(BuildContext context) {
+    return AlertDialog(
+      content: SingleChildScrollView(
+        child: Column(
+          children: List.generate(budget.length, (index) {
+            return Padding(
+              padding: const EdgeInsets.all(8.0),
+              child: GestureDetector(
+                onTap: () {
+                  setState(() {
+                    budgetSelected = budget[index]['name'];
+                  });
+                },
+                child: Container(
+                  width: 150,
+                  height: 50,
+                  padding: const EdgeInsets.all(15.0),
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(10),
+                    color: Colors.white,
+                    border: Border.all(
+                        color: budgetSelected == budget[index]['name']
+                            ? primary
+                            : Colors.transparent,
+                        width: 3),
+                    boxShadow: [
+                      BoxShadow(
+                          color: grey.withOpacity(0.05),
+                          spreadRadius: 3,
+                          blurRadius: 3),
+                    ],
+                  ),
+                  child: Text(
+                    budget[index]['name'],
+                    style: const TextStyle(color: Colors.black, fontSize: 15),
+                  ),
+                ),
+              ),
+            );
+          }),
+        ),
+      ),
+      actions: <Widget>[
+        TextButton(
+          onPressed: () => Navigator.pop(context, 'Cancel'),
+          child: const Text('Cancel'),
+        ),
+        TextButton(
+          onPressed: () => Navigator.pop(context, budgetSelected),
+          child: const Text('OK'),
+        ),
       ],
     );
   }
