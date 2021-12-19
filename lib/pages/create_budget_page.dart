@@ -1,7 +1,10 @@
+import 'dart:convert';
+import "dart:convert";
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:antdesign_icons/antdesign_icons.dart';
+import '../model/budget_service.dart';
 
 class CreateBudget extends StatefulWidget {
   const CreateBudget({Key? key}) : super(key: key);
@@ -11,6 +14,10 @@ class CreateBudget extends StatefulWidget {
 }
 
 class _CreateBudgetState extends State<CreateBudget> {
+  final _budgetNameController = TextEditingController();
+  final _budgetAmountController = TextEditingController();
+  final _budgetService = BudetService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: getBody());
@@ -32,7 +39,6 @@ class _CreateBudgetState extends State<CreateBudget> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                         onTap: () {
@@ -45,9 +51,6 @@ class _CreateBudgetState extends State<CreateBudget> {
                           fontSize: 20,
                           fontWeight: FontWeight.bold,
                           color: black),
-                    ),
-                    const SizedBox(
-                      width: 190,
                     ),
                   ],
                 ),
@@ -77,6 +80,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     TextField(
+                      controller: _budgetNameController,
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.grey.withOpacity(0.5),
@@ -107,6 +111,7 @@ class _CreateBudgetState extends State<CreateBudget> {
                         Container(
                           width: 250,
                           child: TextField(
+                            controller: _budgetAmountController,
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                 color: Colors.grey.withOpacity(0.5),
@@ -134,7 +139,14 @@ class _CreateBudgetState extends State<CreateBudget> {
                               color: primary,
                               borderRadius: BorderRadius.circular(10)),
                           child: IconButton(
-                            onPressed: () {},
+                            onPressed: () async {
+                              await _budgetService
+                                  .addBudget(_budgetNameController.text,
+                                      _budgetAmountController.text)
+                                  .then((value) {
+                                Navigator.pop(context);
+                              });
+                            },
                             icon: Icon(Icons.navigate_next),
                             color: white,
                           ),

@@ -1,6 +1,10 @@
+import 'package:budgetapp/model/tracsaction_service.dart';
 import 'package:flutter/material.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:budgetapp/json/budget_json.dart';
+import 'package:budgetapp/model/budget_service.dart';
+import 'dart:async';
+import 'package:intl/intl.dart';
 
 class Transaction extends StatefulWidget {
   final String type;
@@ -11,6 +15,28 @@ class Transaction extends StatefulWidget {
 }
 
 class _TransactionState extends State<Transaction> {
+  final _budgetService = BudetService();
+  final _transaction = TransactionService();
+  DateTime selectedDate = DateTime.now();
+  DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
+  DateFormat dateFor = DateFormat("yyyy-MM-dd");
+
+  Future<void> _selectDate(BuildContext context) async {
+    final DateTime? picked = await showDatePicker(
+        context: context,
+        initialDate: selectedDate,
+        firstDate: DateTime(2015, 8),
+        lastDate: DateTime(2101));
+    if (picked != null && picked != selectedDate)
+      setState(() {
+        selectedDate = picked;
+      });
+  }
+
+  var _budgetName = "";
+  var _budgetID = "";
+  int _amount = 0;
+  var _notes = "";
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -33,7 +59,6 @@ class _TransactionState extends State<Transaction> {
             child: Column(
               children: [
                 Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
                     GestureDetector(
                         onTap: () {
@@ -47,9 +72,6 @@ class _TransactionState extends State<Transaction> {
                           fontWeight: FontWeight.bold,
                           color: black),
                     ),
-                    const SizedBox(
-                      width: 180,
-                    )
                   ],
                 ),
               ],
@@ -113,6 +135,35 @@ class _TransactionState extends State<Transaction> {
               const SizedBox(
                 height: 30,
               ),
+              Container(
+                child: TextField(
+                  onChanged: (text) {
+                    setState(() {
+                      _notes = text;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintStyle: TextStyle(
+                      color: Colors.grey.withOpacity(0.5),
+                      fontSize: 20,
+                      fontWeight: FontWeight.w500,
+                    ),
+                    border: InputBorder.none,
+                    hintText: 'Name',
+                    enabledBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
+                    ),
+                    focusedBorder: UnderlineInputBorder(
+                      borderSide:
+                          BorderSide(color: Colors.grey.withOpacity(0.5)),
+                    ),
+                  ),
+                ),
+              ),
+              const SizedBox(
+                height: 30,
+              ),
               Row(
                 children: [
                   Container(
@@ -130,15 +181,65 @@ class _TransactionState extends State<Transaction> {
                       ],
                     ),
                     child: Container(
-                      height: 40,
-                      width: 40,
                       child: FloatingActionButton(
                         heroTag: 'trans_budget',
                         onPressed: () {
                           showDialog(
                               context: context,
                               builder: (BuildContext context) {
-                                return BudgetDialog();
+                                return FutureBuilder<dynamic>(
+                                    future: _budgetService.getAllBudget(),
+                                    builder: (BuildContext context,
+                                        AsyncSnapshot<dynamic> snapshot) {
+                                      if (snapshot.hasData) {
+                                        return Padding(
+                                          padding: EdgeInsets.only(top: 100),
+                                          child: Column(
+                                            children: List.generate(
+                                                snapshot.data.length, (index) {
+                                              return GestureDetector(
+                                                onTap: () {
+                                                  setState(() {
+                                                    _budgetID = snapshot
+                                                        .data[index]['_id'];
+                                                    _budgetName = snapshot
+                                                        .data[index]['name'];
+                                                    Navigator.pop(context);
+                                                  });
+                                                },
+                                                onLongPress: () async {
+                                                  await _budgetService
+                                                      .removeBudget(snapshot
+                                                          .data[index]['_id']);
+                                                },
+                                                child: Container(
+                                                  child: Column(
+                                                    crossAxisAlignment:
+                                                        CrossAxisAlignment
+                                                            .start,
+                                                    children: [
+                                                      Text(
+                                                        snapshot.data[index]
+                                                            ['name'],
+                                                        style: const TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 15),
+                                                      )
+                                                    ],
+                                                  ),
+                                                  width: (size.width - 40),
+                                                  padding: const EdgeInsets.all(
+                                                      15.0),
+                                                  decoration: BoxDecoration(
+                                                      color: Colors.white),
+                                                ),
+                                              );
+                                            }),
+                                          ),
+                                        );
+                                      }
+                                      return Container();
+                                    });
                               });
                         },
                         child: Icon(Icons.account_balance_wallet),
@@ -162,9 +263,9 @@ class _TransactionState extends State<Transaction> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        '',
+                        _budgetName,
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 13,
                             fontWeight: FontWeight.bold,
                             color: black.withOpacity(1)),
                       )
@@ -174,6 +275,11 @@ class _TransactionState extends State<Transaction> {
                   Container(
                     width: 100,
                     child: TextField(
+                      onChanged: (text) {
+                        setState(() {
+                          _amount = int.parse(text);
+                        });
+                      },
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.grey.withOpacity(0.5),
@@ -205,7 +311,9 @@ class _TransactionState extends State<Transaction> {
                     width: 40,
                     child: FloatingActionButton(
                       heroTag: 'trans_date',
-                      onPressed: () {},
+                      onPressed: () {
+                        _selectDate(context);
+                      },
                       child: Icon(Icons.calendar_today),
                       backgroundColor: secondary,
                       foregroundColor: white,
@@ -226,9 +334,9 @@ class _TransactionState extends State<Transaction> {
                             fontWeight: FontWeight.bold),
                       ),
                       Text(
-                        'Today',
+                        dateFor.format(selectedDate),
                         style: TextStyle(
-                            fontSize: 19,
+                            fontSize: 12,
                             fontWeight: FontWeight.bold,
                             color: black.withOpacity(1)),
                       )
@@ -242,7 +350,14 @@ class _TransactionState extends State<Transaction> {
                           color: primary,
                           borderRadius: BorderRadius.circular(10)),
                       child: TextButton(
-                          onPressed: () {},
+                          onPressed: () async {
+                            await _transaction.addTransaction(
+                                _notes,
+                                _amount.toString(),
+                                widget.type.toLowerCase(),
+                                _budgetID,
+                                dateFor.format(selectedDate));
+                          },
                           child: Text(
                             "Finish",
                             style: TextStyle(color: white.withOpacity(1)),
@@ -252,72 +367,6 @@ class _TransactionState extends State<Transaction> {
             ],
           ),
         )
-      ],
-    );
-  }
-}
-
-class BudgetDialog extends StatefulWidget {
-  const BudgetDialog({Key? key}) : super(key: key);
-
-  @override
-  _BudgetDialogState createState() => _BudgetDialogState();
-}
-
-class _BudgetDialogState extends State<BudgetDialog> {
-  String? budgetSelected;
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      content: SingleChildScrollView(
-        child: Column(
-          children: List.generate(budget.length, (index) {
-            return Padding(
-              padding: const EdgeInsets.all(8.0),
-              child: GestureDetector(
-                onTap: () {
-                  setState(() {
-                    budgetSelected = budget[index]['name'];
-                  });
-                },
-                child: Container(
-                  width: 150,
-                  height: 50,
-                  padding: const EdgeInsets.all(15.0),
-                  decoration: BoxDecoration(
-                    borderRadius: BorderRadius.circular(10),
-                    color: Colors.white,
-                    border: Border.all(
-                        color: budgetSelected == budget[index]['name']
-                            ? primary
-                            : Colors.transparent,
-                        width: 3),
-                    boxShadow: [
-                      BoxShadow(
-                          color: grey.withOpacity(0.05),
-                          spreadRadius: 3,
-                          blurRadius: 3),
-                    ],
-                  ),
-                  child: Text(
-                    budget[index]['name'],
-                    style: const TextStyle(color: Colors.black, fontSize: 15),
-                  ),
-                ),
-              ),
-            );
-          }),
-        ),
-      ),
-      actions: <Widget>[
-        TextButton(
-          onPressed: () => Navigator.pop(context, 'Cancel'),
-          child: const Text('Cancel'),
-        ),
-        TextButton(
-          onPressed: () => Navigator.pop(context, budgetSelected),
-          child: const Text('OK'),
-        ),
       ],
     );
   }

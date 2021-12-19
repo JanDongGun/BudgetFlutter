@@ -3,6 +3,10 @@ import 'package:budgetapp/json/day_month.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/material.dart';
 import 'package:antdesign_icons/antdesign_icons.dart';
+import '../model/tracsaction_service.dart';
+import 'package:intl/intl.dart';
+
+DateFormat dateFormat = DateFormat("yyyy-MM-dd HH:mm:ss");
 
 class DailyPage extends StatefulWidget {
   const DailyPage({Key? key}) : super(key: key);
@@ -13,6 +17,9 @@ class DailyPage extends StatefulWidget {
 
 class _DailyPageState extends State<DailyPage> {
   int activeDay = 4;
+
+  final _transaction = TransactionService();
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -107,84 +114,90 @@ class _DailyPageState extends State<DailyPage> {
           height: 30,
         ),
         Padding(
-            padding: const EdgeInsets.only(left: 20, right: 20),
-            child: Column(
-              children: List.generate(daily.length, (index) {
-                return Column(
-                  children: [
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                      children: [
-                        Container(
-                          width: (size.width - 40) * 0.7,
-                          child: Row(
+          padding: const EdgeInsets.only(left: 20, right: 20),
+          child: FutureBuilder<dynamic>(
+              future: _transaction.getAllTranSaction(),
+              builder: (BuildContext context, AsyncSnapshot<dynamic> snapshot) {
+                if (snapshot.hasData) {
+                  return Column(
+                    children: List.generate(snapshot.data.length, (index) {
+                      return Column(
+                        children: [
+                          Row(
+                            mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               Container(
-                                width: 50,
-                                height: 50,
-                                decoration: BoxDecoration(
-                                    color: grey.withOpacity(0.1),
-                                    shape: BoxShape.circle),
-                                child: Center(
-                                  child: Image.asset(
-                                    daily[index]['icon'],
-                                    width: 30,
-                                    height: 30,
-                                  ),
-                                ),
-                              ),
-                              const SizedBox(width: 15),
-                              Container(
-                                width: (size.width - 90) * 0.5,
-                                child: Column(
-                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                width: (size.width - 40) * 0.7,
+                                child: Row(
                                   children: [
-                                    Text(daily[index]['name'],
-                                        style: const TextStyle(
-                                            fontSize: 15,
-                                            color: black,
-                                            fontWeight: FontWeight.w600)),
-                                    const SizedBox(
-                                      height: 5,
+                                    Container(
+                                      width: 50,
+                                      height: 50,
+                                      decoration: BoxDecoration(
+                                          color: grey.withOpacity(0.1),
+                                          shape: BoxShape.circle),
                                     ),
-                                    Text(daily[index]['date'],
-                                        style: TextStyle(
-                                            fontSize: 12,
-                                            color: black.withOpacity(0.5),
-                                            fontWeight: FontWeight.w400))
+                                    const SizedBox(width: 15),
+                                    Container(
+                                      width: (size.width - 90) * 0.5,
+                                      child: Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        children: [
+                                          Text(snapshot.data[index]['notes'],
+                                              style: const TextStyle(
+                                                  fontSize: 15,
+                                                  color: black,
+                                                  fontWeight: FontWeight.w600)),
+                                          const SizedBox(
+                                            height: 5,
+                                          ),
+                                          Text(
+                                              dateFormat.format(DateTime.parse(
+                                                      snapshot.data[index]
+                                                          ['time'])
+                                                  .toUtc()),
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  color: black.withOpacity(0.5),
+                                                  fontWeight: FontWeight.w400))
+                                        ],
+                                      ),
+                                    ),
                                   ],
                                 ),
                               ),
-                            ],
-                          ),
-                        ),
-                        Container(
-                          width: (size.width - 40) * 0.3,
-                          child: Row(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Text(
-                                daily[index]['price'],
-                                style: const TextStyle(
-                                    fontSize: 15,
-                                    fontWeight: FontWeight.w600,
-                                    color: green),
+                              Container(
+                                width: (size.width - 40) * 0.3,
+                                child: Row(
+                                  mainAxisAlignment: MainAxisAlignment.end,
+                                  children: [
+                                    Text(
+                                      snapshot.data[index]['amount'].toString(),
+                                      style: const TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.w600,
+                                          color: green),
+                                    )
+                                  ],
+                                ),
                               )
                             ],
                           ),
-                        )
-                      ],
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 65, top: 8),
-                      child: Divider(
-                        thickness: 0.8,
-                      ),
-                    )
-                  ],
-                );
+                          const Padding(
+                            padding: EdgeInsets.only(left: 65, top: 8),
+                            child: Divider(
+                              thickness: 0.8,
+                            ),
+                          )
+                        ],
+                      );
+                    }),
+                  );
+                }
+                return Container();
               }),
-            )),
+        ),
         const SizedBox(
           height: 15,
         ),
