@@ -39,6 +39,8 @@ dependencies:
   antdesign_icons: ^0.0.3
   fl_chart: ^0.40.6
   syncfusion_flutter_calendar: ^19.3.59
+  http: ^0.13.4
+  font_awesome_flutter: ^9.2.0
 
 dev_dependencies:
   flutter_test:
