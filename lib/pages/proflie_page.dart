@@ -1,3 +1,4 @@
+import 'package:budgetapp/pages/change_password_page.dart';
 import 'package:budgetapp/pages/update_profile_page.dart';
 import 'package:flutter/material.dart';
 import 'package:budgetapp/theme/colors.dart';
@@ -62,7 +63,7 @@ class _ProfileState extends State<Profile> {
                     spreadRadius: 0)
               ]),
           child: Padding(
-            padding: const EdgeInsets.all(20),
+            padding: const EdgeInsets.fromLTRB(0, 20, 20, 20),
             child: Column(
               children: [
                 Padding(
@@ -86,9 +87,6 @@ class _ProfileState extends State<Profile> {
                                       'assets/images/keytar_sweenet.png'))),
                         ),
                       ),
-                      const SizedBox(
-                        width: 30,
-                      ),
                       Column(
                         crossAxisAlignment: CrossAxisAlignment.start,
                         children: [
@@ -105,7 +103,10 @@ class _ProfileState extends State<Profile> {
                                 fontWeight: FontWeight.bold),
                           ),
                         ],
-                      )
+                      ),
+                      const SizedBox(
+                        width: 20,
+                      ),
                     ],
                   ),
                 ),
@@ -122,7 +123,7 @@ class _ProfileState extends State<Profile> {
                           padding: const EdgeInsets.fromLTRB(40, 20, 20, 0),
                           child: Container(
                               height: size.height / 20,
-                              width: size.width / 2,
+                              width: size.width / 2 - 50,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
@@ -148,7 +149,7 @@ class _ProfileState extends State<Profile> {
                           padding: const EdgeInsets.fromLTRB(40, 20, 20, 0),
                           child: Container(
                               height: size.height / 20,
-                              width: size.width / 2,
+                              width: size.width / 2 - 50,
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 mainAxisAlignment:
@@ -172,24 +173,49 @@ class _ProfileState extends State<Profile> {
                         ),
                       ],
                     ),
-                    Container(
-                        height: 40,
-                        width: 100,
-                        decoration: BoxDecoration(
-                            color: primary,
-                            borderRadius: BorderRadius.circular(10)),
-                        child: TextButton(
-                            onPressed: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (BuildContext context) =>
-                                          UpdateProfile()));
-                            },
-                            child: Text(
-                              "Update",
-                              style: TextStyle(color: white.withOpacity(1)),
-                            )))
+                    Column(
+                      children: [
+                        Container(
+                            height: 40,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: primary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              const ChangePassword()));
+                                },
+                                child: Text(
+                                  "Change password",
+                                  style: TextStyle(color: white.withOpacity(1)),
+                                ))),
+                        const SizedBox(
+                          height: 10,
+                        ),
+                        Container(
+                            height: 40,
+                            width: 150,
+                            decoration: BoxDecoration(
+                                color: primary,
+                                borderRadius: BorderRadius.circular(10)),
+                            child: TextButton(
+                                onPressed: () {
+                                  Navigator.push(
+                                      context,
+                                      MaterialPageRoute(
+                                          builder: (BuildContext context) =>
+                                              const UpdateProfile()));
+                                },
+                                child: Text(
+                                  "Update profile",
+                                  style: TextStyle(color: white.withOpacity(1)),
+                                ))),
+                      ],
+                    )
                   ],
                 ),
                 const SizedBox(
