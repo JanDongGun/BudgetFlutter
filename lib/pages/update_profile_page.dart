@@ -15,9 +15,17 @@ class UpdateProfile extends StatefulWidget {
 
 class _UpdateProfileState extends State<UpdateProfile> {
   File? imageFile;
+  String? imageFilePath;
   DateTime dateTime = DateTime(2022);
+  var newName = TextEditingController();
+  var newPhone = TextEditingController();
 
   @override
+  void initState() {
+    super.initState();
+    print(imageFilePath);
+  }
+
   Widget build(BuildContext context) {
     return Scaffold(body: getBody());
   }
@@ -160,6 +168,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     TextField(
+                      controller: newName,
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.grey.withOpacity(0.5),
@@ -186,6 +195,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     TextField(
+                      controller: newPhone,
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.grey.withOpacity(0.5),
@@ -278,6 +288,7 @@ class _UpdateProfileState extends State<UpdateProfile> {
     if (file?.path != null) {
       setState(() {
         imageFile = File(file!.path);
+        imageFilePath = file.path;
       });
     }
   }

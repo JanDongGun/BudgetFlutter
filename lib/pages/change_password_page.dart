@@ -10,6 +10,9 @@ class ChangePassword extends StatefulWidget {
 }
 
 class _ChangePasswordState extends State<ChangePassword> {
+  var oldPassword = TextEditingController();
+  var newPassword = TextEditingController();
+  var repeatPassword = TextEditingController();
   @override
   Widget build(BuildContext context) {
     return Scaffold(body: getBody());
@@ -76,6 +79,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                       style: TextStyle(fontSize: 12, color: Colors.grey),
                     ),
                     TextField(
+                      controller: oldPassword,
                       decoration: InputDecoration(
                         hintStyle: TextStyle(
                           color: Colors.grey.withOpacity(0.5),
@@ -104,6 +108,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                     Container(
                       width: 250,
                       child: TextField(
+                        controller: newPassword,
                         decoration: InputDecoration(
                           hintStyle: TextStyle(
                             color: Colors.grey.withOpacity(0.5),
@@ -135,6 +140,7 @@ class _ChangePasswordState extends State<ChangePassword> {
                         Container(
                           width: 250,
                           child: TextField(
+                            controller: repeatPassword,
                             decoration: InputDecoration(
                               hintStyle: TextStyle(
                                 color: Colors.grey.withOpacity(0.5),
