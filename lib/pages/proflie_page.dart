@@ -39,7 +39,9 @@ class _ProfileState extends State<Profile> {
 
   Widget build(BuildContext context) {
     return Scaffold(
-      body: getBody(),
+      body: Center(
+        child: Text("hello"),
+      ),
     );
   }
 

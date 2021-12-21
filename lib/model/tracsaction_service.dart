@@ -1,3 +1,4 @@
+import 'package:budgetapp/json/budget_json.dart';
 import 'package:budgetapp/model/transaction.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -60,30 +61,31 @@ class TransactionService {
     print("add transac ${res}");
   }
 
-  // Future<void> removeBudget(String id) async {
-  //   var res = await http.delete(
-  //       Uri.parse(
-  //           "https://budgettrackerapi.herokuapp.com/api/v1/budgets/${id}"),
-  //       headers: {
-  //         "Authorization": "Bearer 61b36b47fd33e2b66764d1cb",
-  //         "Accept": "*/*"
-  //       });
-  // }
+  Future<void> removeTransaction(String id) async {
+    var res = await http.delete(
+        Uri.parse(
+            "https://budgettrackerapi.herokuapp.com/api/v1/transactions/${id}"),
+        headers: {
+          "Authorization": "Bearer 61b36b47fd33e2b66764d1cb",
+          "Accept": "*/*"
+        });
+  }
 
-  // Future<void> updateBudget(String id, String title, String amount) async {
-  //   var res = await http.patch(
-  //       Uri.parse(
-  //           "https://budgettrackerapi.herokuapp.com/api/v1/budgets/${id}"),
-  //       headers: {
-  //         "Authorization": "Bearer 61b36b47fd33e2b66764d1cb",
-  //         "Accept": "*/*"
-  //       },
-  //       body: {
-  //         "name": title,
-  //         "amount": amount,
-  //         "category": "61b618691314ee1432aff835"
-  //       });
+  Future<void> updateTransaction(
+      String id, String notes, String amount, String budget) async {
+    var res = await http.patch(
+        Uri.parse(
+            "https://budgettrackerapi.herokuapp.com/api/v1/transactions/${id}"),
+        headers: {
+          "Authorization": "Bearer 61b36b47fd33e2b66764d1cb",
+          "Accept": "*/*"
+        },
+        body: {
+          "notes": notes,
+          "amount": amount,
+          "budget": budget
+        });
 
-  //   print(res);
-  // }
+    print(res);
+  }
 }
