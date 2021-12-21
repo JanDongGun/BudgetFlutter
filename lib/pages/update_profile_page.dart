@@ -1,5 +1,6 @@
 import 'dart:io';
 
+import 'package:budgetapp/model/profile_service.dart';
 import 'package:budgetapp/theme/colors.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -16,18 +17,16 @@ class UpdateProfile extends StatefulWidget {
 class _UpdateProfileState extends State<UpdateProfile> {
   File? imageFile;
   String? imageFilePath;
-  DateTime dateTime = DateTime(2022);
-  var newName = TextEditingController();
-  var newPhone = TextEditingController();
+  DateTime dateTime = DateTime(2000);
+  DateTime? newDate;
+  String formatDate = '2021-01-01T00:00:00.000Z';
+  final newName = TextEditingController();
+  final newPhone = TextEditingController();
 
+  final _profileService = ProfileService();
   @override
-  void initState() {
-    super.initState();
-    print(imageFilePath);
-  }
-
   Widget build(BuildContext context) {
-    return Scaffold(body: getBody());
+    return Scaffold(resizeToAvoidBottomInset: false, body: getBody());
   }
 
   Widget getBody() {
@@ -77,87 +76,6 @@ class _UpdateProfileState extends State<UpdateProfile> {
           child: Column(
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
-              const Text(
-                'Choose Image',
-                style: TextStyle(fontSize: 12, color: Colors.grey),
-              ),
-              const SizedBox(
-                height: 20,
-              ),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  CircularPercentIndicator(
-                    percent: 0.5,
-                    progressColor: primary,
-                    radius: 120,
-                    center: imageFile != null
-                        ? Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(color: grey, width: 0.5),
-                                image: DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: FileImage(imageFile!))),
-                          )
-                        : Container(
-                            height: 100,
-                            width: 100,
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(50),
-                                border: Border.all(color: grey, width: 0.5),
-                                image: const DecorationImage(
-                                    fit: BoxFit.fill,
-                                    image: AssetImage(
-                                        'assets/images/keytar_sweenet.png'))),
-                          ),
-                  ),
-                  const SizedBox(width: 10),
-                  Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                        color: primary,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: IconButton(
-                      onPressed: () => getImage(source: ImageSource.gallery),
-                      icon: const Icon(Icons.image),
-                      color: white,
-                    ),
-                  ),
-                  const Text(
-                    'Gallery',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                  Container(
-                    height: 45,
-                    width: 45,
-                    decoration: BoxDecoration(
-                        color: primary,
-                        borderRadius: BorderRadius.circular(50)),
-                    child: IconButton(
-                      onPressed: () => getImage(source: ImageSource.camera),
-                      icon: const Icon(Icons.camera_alt),
-                      color: white,
-                    ),
-                  ),
-                  const Text(
-                    'Camera',
-                    style: TextStyle(fontSize: 12, color: Colors.grey),
-                  ),
-                  const SizedBox(
-                    width: 10,
-                  ),
-                ],
-              ),
-              const SizedBox(
-                height: 40,
-              ),
               Padding(
                 padding: const EdgeInsets.fromLTRB(10, 0, 10, 0),
                 child: Column(
@@ -234,14 +152,19 @@ class _UpdateProfileState extends State<UpdateProfile> {
                               borderRadius: BorderRadius.circular(50)),
                           child: IconButton(
                             onPressed: () async {
-                              DateTime? newDate = await showDatePicker(
+                              newDate = await showDatePicker(
                                   context: context,
                                   initialDate: dateTime,
                                   firstDate: DateTime(1950),
                                   lastDate: DateTime(2022));
                               if (newDate != null) {
                                 setState(() {
-                                  dateTime = newDate;
+                                  dateTime = newDate!;
+                                  formatDate =
+                                      newDate.toString().split(' ')[0] +
+                                          'T' +
+                                          newDate.toString().split(' ')[1] +
+                                          'Z';
                                 });
                               }
                             },
@@ -257,7 +180,9 @@ class _UpdateProfileState extends State<UpdateProfile> {
                           style: TextStyle(
                               fontSize: 15, color: grey.withOpacity(1)),
                         ),
-                        const Spacer(),
+                        const SizedBox(
+                          width: 120,
+                        ),
                         Container(
                             height: 40,
                             width: 100,
@@ -265,7 +190,15 @@ class _UpdateProfileState extends State<UpdateProfile> {
                                 color: primary,
                                 borderRadius: BorderRadius.circular(10)),
                             child: TextButton(
-                                onPressed: () {},
+                                onPressed: () async {
+                                  await _profileService
+                                      .updateProfile(newName.text,
+                                          newPhone.text, formatDate)
+                                      .then((value) => Navigator.pop(context));
+                                  // print(formatDate);
+                                  // print(newName.text);
+                                  // print(newPhone.text);
+                                },
                                 child: Text(
                                   "Update",
                                   style: TextStyle(color: white.withOpacity(1)),
